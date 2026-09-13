@@ -16,13 +16,13 @@ public:
     Pipe() : name(""), length(0.0), diameter(0), repairing(false) {}
 
     void input() {
-        cout << "Введите название трубы";
+        cout << "Введите название трубы ";
         cin >> name;
 
-        cout << "Введите длину трубы в километрах";
+        cout << "Введите длину трубы в километрах ";
         cin >> length;
 
-        cout << "Введите диаметр трубы в миллиметрах";
+        cout << "Введите диаметр трубы в миллиметрах ";
         cin >> diameter;
 
         repairing = false;
@@ -30,11 +30,11 @@ public:
 
     void print() const {
         cout << "Труба\n"
-            << "Название :" << name << "\n"
-            << "Длина :" << length << "км\n"
-            <<"Диаметр :"<< diameter<<"мм\n"
-            << "Состояние : "
-            << (repairing ? "В ремонте :" : "В работе")
+            << "Название: " << name << "\n"
+            << "Длина: " << length << " км\n"
+            <<"Диаметр: "<< diameter<<" мм\n"
+            << "Состояние: "
+            << (repairing ? "В ремонте" : "В работе")
             << "\n";
     }
 
@@ -47,7 +47,19 @@ public:
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    Pipe pipe;
+
+    cout << "\nВвод трубы\n";
+    pipe.input();
+
+    cout << "Текущее состояние\n";
+    pipe.print();
+
+    cout << "Редактирование\n";
+    pipe.inTheRepair();
+    pipe.print();
+
+    return 0;
 }
 
 // Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
