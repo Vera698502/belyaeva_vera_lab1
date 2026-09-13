@@ -2,6 +2,48 @@
 //
 
 #include <iostream>
+#include <string>
+
+using namespace std;
+
+class Pipe {
+public:
+    string name;
+    double length;
+    int diameter;
+    bool repairing;
+
+    Pipe() : name(""), length(0.0), diameter(0), repairing(false) {}
+
+    void input() {
+        cout << "Введите название трубы";
+        cin >> name;
+
+        cout << "Введите длину трубы в километрах";
+        cin >> length;
+
+        cout << "Введите диаметр трубы в миллиметрах";
+        cin >> diameter;
+
+        repairing = false;
+    }
+
+    void print() const {
+        cout << "Труба\n"
+            << "Название :" << name << "\n"
+            << "Длина :" << length << "км\n"
+            <<"Диаметр :"<< diameter<<"мм\n"
+            << "Состояние : "
+            << (repairing ? "В ремонте :" : "В работе")
+            << "\n";
+    }
+
+    void inTheRepair() {
+        repairing = !repairing;
+        cout << "Признак изменён. Труба теперь: "
+            << (repairing ? "В ремонте" : "В работе") << "\n";
+    }
+};
 
 int main()
 {
