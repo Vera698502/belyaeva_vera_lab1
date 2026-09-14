@@ -43,6 +43,7 @@ public:
         repairing = !repairing;
         cout << "Признак изменён. Труба теперь: "
             << (repairing ? "В ремонте" : "В работе") << "\n";
+
     }
 };
 
@@ -109,6 +110,21 @@ int main()
     cout << "Редактирование\n";
     pipe.inTheRepair();
     pipe.print();
+
+    CompressorStation compressorStation;
+
+    cout << "\nВвод КС\n";
+    compressorStation.input();
+
+    cout << "Текущее состояние\n";
+    compressorStation.print();
+
+    cout << "Редактирование\n";
+    compressorStation.startWorkshop();
+    compressorStation.print();
+
+    compressorStation.stopWorkshop();
+    compressorStation.print();
 
     return 0;
 }
