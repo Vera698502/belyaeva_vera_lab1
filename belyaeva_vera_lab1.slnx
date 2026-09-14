@@ -3,5 +3,5 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="belyaeva_vera_lab1.vcxproj" />
+  <Project Path="belyaeva_vera_lab1.vcxproj" Id="a1f376d7-d635-4ffe-937a-2325701240a1" />
 </Solution>

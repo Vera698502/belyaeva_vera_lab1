@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <clocale>
 
 using namespace std;
 
@@ -47,6 +48,8 @@ public:
 
 int main()
 {
+    setlocale(LC_ALL, "Russian");
+
     Pipe pipe;
 
     cout << "\nВвод трубы\n";
