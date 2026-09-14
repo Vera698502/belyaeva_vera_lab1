@@ -30,7 +30,7 @@ public:
     }
 
     void print() const {
-        cout << "Труба\n"
+        cout << "\nТруба\n"
             << "Название: " << name << "\n"
             << "Длина: " << length << " км\n"
             <<"Диаметр: "<< diameter<<" мм\n"
@@ -43,6 +43,54 @@ public:
         repairing = !repairing;
         cout << "Признак изменён. Труба теперь: "
             << (repairing ? "В ремонте" : "В работе") << "\n";
+    }
+};
+
+class CompressorStation {
+public:
+    string name;
+    int numberOfWorkshops;
+    int operatingWorkshops;
+    int stationClass;
+
+    CompressorStation() : name(""), numberOfWorkshops(0), operatingWorkshops(0), stationClass(0) {}
+
+    void input() {
+        cout << "Введите название кс: ";
+        cin >> name;
+
+        cout << "Количество цехов: ";
+        cin >> numberOfWorkshops;
+
+        operatingWorkshops=0;
+
+        cout << "Класс станции: ";
+        cin >> stationClass;
+    }
+
+    void print() const {
+        cout << "\n КС \n"
+            << "Название: " << name << "\n"
+            << "Количество цехов: " << numberOfWorkshops << "\n"
+            << "Количество работающих цехов: " <<operatingWorkshops<< "\n"
+            << "Класс станции: " << stationClass << "\n"
+            <<"Станция "
+            <<(operatingWorkshops>0 ? "Работает ": "Простаивает")
+            << "\n";
+    }
+
+    void startWorkshop() {
+        bool canStart = (operatingWorkshops < numberOfWorkshops);
+        cout << (canStart ? "Цех запущен.\n"
+            : "Нельзя, все цеха в работе\n");
+        if (canStart) operatingWorkshops++;
+    }
+
+    void stopWorkshop() {
+        bool canStop = (operatingWorkshops > 0);
+        cout << (canStop ? "Цех остановлен. \n"
+            : "Нельзя, нет работающих цехов\n");
+        if (canStop) operatingWorkshops--;
     }
 };
 
