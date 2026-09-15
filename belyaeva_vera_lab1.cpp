@@ -7,8 +7,7 @@
 
 using namespace std;
 
-class Pipe {
-public:
+struct Pipe{
     string name;
     double length;
     double diameter;
@@ -47,8 +46,7 @@ public:
     }
 };
 
-class CompressorStation {
-public:
+struct CompressorStation{
     string name;
     int numberOfWorkshops;
     int operatingWorkshops;
