@@ -11,10 +11,10 @@ class Pipe {
 public:
     string name;
     double length;
-    int diameter;
+    double diameter;
     bool repairing;
 
-    Pipe() : name(""), length(0.0), diameter(0), repairing(false) {}
+    Pipe() : name(""), length(0.0), diameter(0.0), repairing(false) {}
 
     void input() {
         cout << "Введите название трубы ";
@@ -101,31 +101,89 @@ int main()
 
     Pipe pipe;
 
-    cout << "\nВвод трубы\n";
-    pipe.input();
-
-    cout << "Текущее состояние\n";
-    pipe.print();
-
-    cout << "Редактирование\n";
-    pipe.inTheRepair();
-    pipe.print();
-
     CompressorStation compressorStation;
 
-    cout << "\nВвод КС\n";
-    compressorStation.input();
+    bool pipeFilled = false;
+    bool csFilled = false;
 
-    cout << "Текущее состояние\n";
-    compressorStation.print();
 
-    cout << "Редактирование\n";
-    compressorStation.startWorkshop();
-    compressorStation.print();
+    while (true) {
+        cout << "\nМеню\n"
+            << "1.Добавить трубу\n"
+            << "2.Добавить кс\n"
+            << "3.Просмотр всех объектов\n"
+            << "4.Редактировать трубу (в ремонте/не в ремонте)\n"
+            << "5.Редактировать кс (запуск/ остановка цеха)\n"
+            << "0. Выход\n"
+            << "\n";
+         int choice;
+         cout << "Ваш выбор: \n";
+         cin >> choice;
 
-    compressorStation.stopWorkshop();
-    compressorStation.print();
+         switch (choice) {
 
+         case 1:
+             pipe.input();
+             pipeFilled = true;
+             cout << "Труба добавлена\n";
+             break;
+
+         case 2:
+             compressorStation.input();
+             csFilled = true;
+             cout << "Добавлена кс\n";
+             break;
+         
+         case 3:
+             if (!pipeFilled && !csFilled) {
+                 cout << "Пока ничего не введено\n";
+             }
+             else {
+                 if (pipeFilled) pipe.print();
+                 if (csFilled) compressorStation.print();
+             }
+             break;
+
+         case 4:
+             if (!pipeFilled) {
+                 cout << "Сначала добавьте трубу (п.1)\n";
+             }
+             else {
+                 pipe.inTheRepair();
+             }
+             break;
+         case 5:
+             if (!csFilled) {
+                 cout << "Сначала добавьте кс\n";
+             }
+             else {
+                 cout << "1.Запустить цех\n"
+                     << "2. Остановить цех\n";
+                 int sub;
+                 cout << "Выбор\n ";
+                 cin >> sub;
+                 switch (sub) {
+
+                 case 1: 
+                     compressorStation.startWorkshop();
+                     break;
+                 case 2:
+                     compressorStation.stopWorkshop();
+                     break;
+                 default: cout << "Неверный пункт меню\n";
+
+                 }
+
+             }
+             break;
+
+         case 0:
+             cout << "Выход из программы\n";
+             return 0;
+         default:
+             cout << "Неыерный пункт меню!\n";
+         }
+    }
     return 0;
 }
 
