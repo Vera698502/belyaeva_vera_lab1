@@ -18,21 +18,21 @@ struct Pipe{
     Pipe() : name(""), length(0.0), diameter(0.0), repairing(false) {}
 
     void input() {
-        cout << "Введите название трубы ";
+        cout << "Введите название трубы: ";
         cin >> name;
 
-        cout << "Введите длину трубы в километрах ";
+        cout << "Введите длину трубы в километрах: ";
         while (!(cin >> length)) {
             cin.clear();
             cin.ignore(10000, '\n');
             cout << "Ошибка! Введите число: ";
         }
 
-        cout << "Введите диаметр трубы в миллиметрах ";
+        cout << "Введите диаметр трубы в миллиметрах: ";
         while (!(cin >> diameter)) {
             cin.clear();
             cin.ignore(10000, '\n');
-            cout << "Ошибка!Введите число!\n";
+            cout << "Ошибка!Введите число: ";
         }
 
         repairing = false;
@@ -84,7 +84,7 @@ struct CompressorStation{
         while (!(cin >> numberOfWorkshops)) {
             cin.clear();
             cin.ignore(10000, '\n');
-            cout << "Ошибка!Введите число!\n";
+            cout << "Ошибка!Введите число: ";
         }
 
         operatingWorkshops=0;
@@ -93,7 +93,7 @@ struct CompressorStation{
         while (!(cin >> stationClass)) {
             cin.clear();
             cin.ignore(10000, '\n');
-            cout << "Ошибка! Введите число!\n";
+            cout << "Ошибка! Введите число: ";
         }
     }
 
@@ -164,7 +164,7 @@ int main()
          if (!(cin >> choice)) {
              cin.clear();
              cin.ignore(10000, '\n');
-             cout << "Ошибка! Введите число!\n";
+             cout << "Ошибка! Введите число: ";
              continue;
          }
 
@@ -212,7 +212,7 @@ int main()
                  if (!(cin >> sub)) {
                      cin.clear();
                      cin.ignore(10000, '\n');
-                     cout << "Ошибка!Введите число!\n";
+                     cout << "Ошибка!Введите число: ";
                      break;
                  }
                  switch (sub) {
