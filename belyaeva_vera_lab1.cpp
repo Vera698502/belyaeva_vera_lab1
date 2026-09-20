@@ -18,7 +18,7 @@ struct Pipe{
     Pipe() : name(""), length(0.0), diameter(0.0), repairing(false) {}
 
     void input() {
-        cout << "Введите название трубы: ";
+        cout << "Введите название трубы:  ";
         cin >> name;
 
         cout << "Введите длину трубы в километрах: ";
