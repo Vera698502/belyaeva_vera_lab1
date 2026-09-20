@@ -22,17 +22,17 @@ struct Pipe{
         cin >> name;
 
         cout << "Введите длину трубы в километрах: ";
-        while (!(cin >> length)) {
+        while (!(cin >> length) || length <= 0 || cin.peek() != '\n') {
             cin.clear();
             cin.ignore(10000, '\n');
-            cout << "Ошибка! Введите число: ";
+            cout << "Ошибка! Введите положительное число: ";
         }
 
         cout << "Введите диаметр трубы в миллиметрах: ";
-        while (!(cin >> diameter)) {
+        while (!(cin >> diameter) || diameter <= 0 || cin.peek() != '\n') {
             cin.clear();
             cin.ignore(10000, '\n');
-            cout << "Ошибка!Введите число: ";
+            cout << "Ошибка!Введите положительное число: ";
         }
 
         repairing = false;
@@ -81,7 +81,7 @@ struct CompressorStation{
         cin >> name;
 
         cout << "Количество цехов: ";
-        while (!(cin >> numberOfWorkshops)) {
+        while (!(cin >> numberOfWorkshops) || numberOfWorkshops <= 0 || cin.peek() != '\n') {
             cin.clear();
             cin.ignore(10000, '\n');
             cout << "Ошибка!Введите число: ";
@@ -90,7 +90,7 @@ struct CompressorStation{
         operatingWorkshops=0;
 
         cout << "Класс станции: ";
-        while (!(cin >> stationClass)) {
+        while (!(cin >> stationClass) || stationClass <= 0 || cin.peek() != '\n') {
             cin.clear();
             cin.ignore(10000, '\n');
             cout << "Ошибка! Введите число: ";
