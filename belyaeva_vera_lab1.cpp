@@ -22,10 +22,18 @@ struct Pipe{
         cin >> name;
 
         cout << "Введите длину трубы в километрах ";
-        cin >> length;
+        while (!(cin >> length)) {
+            cin.clear();
+            cin.ignore(10000, '\n');
+            cout << "Ошибка! Введите число: ";
+        }
 
         cout << "Введите диаметр трубы в миллиметрах ";
-        cin >> diameter;
+        while (!(cin >> diameter)) {
+            cin.clear();
+            cin.ignore(10000, '\n');
+            cout << "Ошибка!Введите число!\n";
+        }
 
         repairing = false;
     }
@@ -73,12 +81,20 @@ struct CompressorStation{
         cin >> name;
 
         cout << "Количество цехов: ";
-        cin >> numberOfWorkshops;
+        while (!(cin >> numberOfWorkshops)) {
+            cin.clear();
+            cin.ignore(10000, '\n');
+            cout << "Ошибка!Введите число!\n";
+        }
 
         operatingWorkshops=0;
 
         cout << "Класс станции: ";
-        cin >> stationClass;
+        while (!(cin >> stationClass)) {
+            cin.clear();
+            cin.ignore(10000, '\n');
+            cout << "Ошибка! Введите число!\n";
+        }
     }
 
     void print() const {
@@ -144,7 +160,13 @@ int main()
             << "\n";
          int choice;
          cout << "Ваш выбор: \n";
-         cin >> choice;
+
+         if (!(cin >> choice)) {
+             cin.clear();
+             cin.ignore(10000, '\n');
+             cout << "Ошибка! Введите число!\n";
+             continue;
+         }
 
          switch (choice) {
 
@@ -187,7 +209,12 @@ int main()
                      << "2. Остановить цех\n";
                  int sub;
                  cout << "Выбор\n ";
-                 cin >> sub;
+                 if (!(cin >> sub)) {
+                     cin.clear();
+                     cin.ignore(10000, '\n');
+                     cout << "Ошибка!Введите число!\n";
+                     break;
+                 }
                  switch (sub) {
 
                  case 1:
@@ -235,7 +262,7 @@ int main()
              cout << "Выход из программы\n";
              return 0;
          default:
-             cout << "Неыерный пункт меню!\n";
+             cout << "Неверный пункт меню!\n";
          }
     }
     return 0;
