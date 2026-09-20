@@ -4,6 +4,8 @@
 #include <iostream>
 #include <string>
 #include <clocale>
+#include <fstream>
+
 
 using namespace std;
 
@@ -43,6 +45,18 @@ struct Pipe{
         cout << "Признак изменён. Труба теперь: "
             << (repairing ? "В ремонте" : "В работе") << "\n";
 
+    }
+    void saveToFile(ofstream& file) {
+        file << name << "\n";
+        file << length << "\n";
+        file << diameter << "\n";
+        file << repairing << "\n";
+    }
+    void loadFromFile(ifstream& file) {
+        file >> name;
+        file >> length;
+        file >> diameter;
+        file >> repairing;
     }
 };
 
@@ -91,6 +105,18 @@ struct CompressorStation{
             : "Нельзя, нет работающих цехов\n");
         if (canStop) operatingWorkshops--;
     }
+    void saveToFile(ofstream& file) {
+        file << name << "\n";
+        file << numberOfWorkshops << "\n";
+        file << operatingWorkshops << "\n";
+        file << stationClass << "\n";
+    }
+    void loadFromFile(ifstream& file) {
+        file >> name;
+        file >> numberOfWorkshops;
+        file >> operatingWorkshops;
+        file >> stationClass;
+    }
 };
 
 int main()
@@ -112,6 +138,8 @@ int main()
             << "3.Просмотр всех объектов\n"
             << "4.Редактировать трубу (в ремонте/не в ремонте)\n"
             << "5.Редактировать кс (запуск/ остановка цеха)\n"
+            <<"6. Сохранить в файл\n"
+            <<"7. Загрузить из файла\n"
             << "0. Выход\n"
             << "\n";
          int choice;
@@ -131,7 +159,7 @@ int main()
              csFilled = true;
              cout << "Добавлена кс\n";
              break;
-         
+
          case 3:
              if (!pipeFilled && !csFilled) {
                  cout << "Пока ничего не введено\n";
@@ -162,7 +190,7 @@ int main()
                  cin >> sub;
                  switch (sub) {
 
-                 case 1: 
+                 case 1:
                      compressorStation.startWorkshop();
                      break;
                  case 2:
@@ -174,6 +202,34 @@ int main()
 
              }
              break;
+         case 6: {
+             ofstream file("data.txt");
+             if (file.is_open()) {
+                 if (pipeFilled) pipe.saveToFile(file);
+                 if (csFilled) compressorStation.saveToFile(file);
+                 file.close();
+                 cout << "Данные сохранены\n";
+             }
+             else {
+                 cout << "Ошибка открытия файла\n";
+             }
+             break;
+         }
+         case 7:{
+             ifstream file("data.txt");
+             if (file.is_open()) {
+                 pipe.loadFromFile(file);
+                 compressorStation.loadFromFile(file);
+                 pipeFilled = true;
+                 csFilled = true;
+                 file.close();
+                 cout << "Данные загружены\n";
+             }
+             else {
+                 cout << "Файл не найден\n";
+             }
+             break;
+         }
 
          case 0:
              cout << "Выход из программы\n";
