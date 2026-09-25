@@ -6,10 +6,9 @@
 #include <clocale>
 #include <fstream>
 
-
 using namespace std;
 
-struct Pipe{
+struct Pipe {
     string name;
     double length;
     double diameter;
@@ -19,7 +18,8 @@ struct Pipe{
 
     void input() {
         cout << "Введите название трубы:  ";
-        cin >> name;
+        cin.ignore();
+        getline(cin, name);
 
         cout << "Введите длину трубы в километрах: ";
         while (!(cin >> length) || length <= 0 || cin.peek() != '\n') {
@@ -32,7 +32,7 @@ struct Pipe{
         while (!(cin >> diameter) || diameter <= 0 || cin.peek() != '\n') {
             cin.clear();
             cin.ignore(10000, '\n');
-            cout << "Ошибка!Введите положительное число: ";
+            cout << "Ошибка! Введите положительное число: ";
         }
 
         repairing = false;
@@ -42,7 +42,7 @@ struct Pipe{
         cout << "\nТруба\n"
             << "Название: " << name << "\n"
             << "Длина: " << length << " км\n"
-            <<"Диаметр: "<< diameter<<" мм\n"
+            << "Диаметр: " << diameter << " мм\n"
             << "Состояние: "
             << (repairing ? "В ремонте" : "В работе")
             << "\n";
@@ -52,23 +52,35 @@ struct Pipe{
         repairing = !repairing;
         cout << "Признак изменён. Труба теперь: "
             << (repairing ? "В ремонте" : "В работе") << "\n";
-
     }
+
     void saveToFile(ofstream& file) {
+        file << "1\n";             
         file << name << "\n";
         file << length << "\n";
         file << diameter << "\n";
         file << repairing << "\n";
     }
-    void loadFromFile(ifstream& file) {
-        file >> name;
+
+    bool loadFromFile(ifstream& file) {
+        int marker;
+        file >> marker;
+        file.ignore();             
+
+        if (marker == 0) {
+            return false;          
+        }
+
+        getline(file, name);       
         file >> length;
         file >> diameter;
         file >> repairing;
+        file.ignore();             
+        return true;
     }
 };
 
-struct CompressorStation{
+struct CompressorStation {
     string name;
     int numberOfWorkshops;
     int operatingWorkshops;
@@ -78,16 +90,17 @@ struct CompressorStation{
 
     void input() {
         cout << "Введите название кс: ";
-        cin >> name;
+        cin.ignore();
+        getline(cin, name);
 
         cout << "Количество цехов: ";
         while (!(cin >> numberOfWorkshops) || numberOfWorkshops <= 0 || cin.peek() != '\n') {
             cin.clear();
             cin.ignore(10000, '\n');
-            cout << "Ошибка!Введите число: ";
+            cout << "Ошибка! Введите число: ";
         }
 
-        operatingWorkshops=0;
+        operatingWorkshops = 0;
 
         cout << "Класс станции: ";
         while (!(cin >> stationClass) || stationClass <= 0 || cin.peek() != '\n') {
@@ -101,10 +114,10 @@ struct CompressorStation{
         cout << "\n КС \n"
             << "Название: " << name << "\n"
             << "Количество цехов: " << numberOfWorkshops << "\n"
-            << "Количество работающих цехов: " <<operatingWorkshops<< "\n"
+            << "Количество работающих цехов: " << operatingWorkshops << "\n"
             << "Класс станции: " << stationClass << "\n"
-            <<"Станция "
-            <<(operatingWorkshops>0 ? "Работает ": "Простаивает")
+            << "Станция "
+            << (operatingWorkshops > 0 ? "Работает " : "Простаивает")
             << "\n";
     }
 
@@ -121,17 +134,30 @@ struct CompressorStation{
             : "Нельзя, нет работающих цехов\n");
         if (canStop) operatingWorkshops--;
     }
+
     void saveToFile(ofstream& file) {
+        file << "1\n";             
         file << name << "\n";
         file << numberOfWorkshops << "\n";
         file << operatingWorkshops << "\n";
         file << stationClass << "\n";
     }
-    void loadFromFile(ifstream& file) {
-        file >> name;
+
+    bool loadFromFile(ifstream& file) {
+        int marker;
+        file >> marker;
+        file.ignore();             
+
+        if (marker == 0) {
+            return false;          
+        }
+
+        getline(file, name);
         file >> numberOfWorkshops;
         file >> operatingWorkshops;
         file >> stationClass;
+        file.ignore();
+        return true;
     }
 };
 
@@ -140,12 +166,10 @@ int main()
     setlocale(LC_ALL, "Russian");
 
     Pipe pipe;
-
     CompressorStation compressorStation;
 
     bool pipeFilled = false;
     bool csFilled = false;
-
 
     while (true) {
         cout << "\nМеню\n"
@@ -154,127 +178,143 @@ int main()
             << "3.Просмотр всех объектов\n"
             << "4.Редактировать трубу (в ремонте/не в ремонте)\n"
             << "5.Редактировать кс (запуск/ остановка цеха)\n"
-            <<"6. Сохранить в файл\n"
-            <<"7. Загрузить из файла\n"
+            << "6. Сохранить в файл\n"
+            << "7. Загрузить из файла\n"
             << "0. Выход\n"
             << "\n";
-         int choice;
-         cout << "Ваш выбор: \n";
 
-         if (!(cin >> choice)) {
-             cin.clear();
-             cin.ignore(10000, '\n');
-             cout << "Ошибка! Введите число: ";
-             continue;
-         }
+        int choice;
+        cout << "Ваш выбор: \n";
 
-         switch (choice) {
+        if (!(cin >> choice)) {
+            cin.clear();
+            cin.ignore(10000, '\n');
+            cout << "Ошибка! Введите число: ";
+            continue;
+        }
 
-         case 1:
-             pipe.input();
-             pipeFilled = true;
-             cout << "Труба добавлена\n";
-             break;
+        switch (choice) {
 
-         case 2:
-             compressorStation.input();
-             csFilled = true;
-             cout << "Добавлена кс\n";
-             break;
+        case 1:
+            pipe.input();
+            pipeFilled = true;
+            cout << "Труба добавлена\n";
+            break;
 
-         case 3:
-             if (!pipeFilled && !csFilled) {
-                 cout << "Пока ничего не введено\n";
-             }
-             else {
-                 if (pipeFilled) pipe.print();
-                 if (csFilled) compressorStation.print();
-             }
-             break;
+        case 2:
+            compressorStation.input();
+            csFilled = true;
+            cout << "Добавлена кс\n";
+            break;
 
-         case 4:
-             if (!pipeFilled) {
-                 cout << "Сначала добавьте трубу (п.1)\n";
-             }
-             else {
-                 pipe.inTheRepair();
-             }
-             break;
-         case 5:
-             if (!csFilled) {
-                 cout << "Сначала добавьте кс\n";
-             }
-             else {
-                 cout << "1.Запустить цех\n"
-                     << "2. Остановить цех\n";
-                 int sub;
-                 cout << "Выбор\n ";
-                 if (!(cin >> sub)) {
-                     cin.clear();
-                     cin.ignore(10000, '\n');
-                     cout << "Ошибка!Введите число: ";
-                     break;
-                 }
-                 switch (sub) {
+        case 3:
+            if (!pipeFilled && !csFilled) {
+                cout << "Пока ничего не введено\n";
+            }
+            else {
+                if (pipeFilled) pipe.print();
+                if (csFilled) compressorStation.print();
+            }
+            break;
 
-                 case 1:
-                     compressorStation.startWorkshop();
-                     break;
-                 case 2:
-                     compressorStation.stopWorkshop();
-                     break;
-                 default: cout << "Неверный пункт меню\n";
+        case 4:
+            if (!pipeFilled) {
+                cout << "Сначала добавьте трубу (п.1)\n";
+            }
+            else {
+                pipe.inTheRepair();
+            }
+            break;
 
-                 }
+        case 5:
+            if (!csFilled) {
+                cout << "Сначала добавьте кс\n";
+            }
+            else {
+                cout << "1.Запустить цех\n"
+                    << "2. Остановить цех\n";
+                int sub;
+                cout << "Выбор\n ";
+                if (!(cin >> sub)) {
+                    cin.clear();
+                    cin.ignore(10000, '\n');
+                    cout << "Ошибка! Введите число: ";
+                    break;
+                }
+                switch (sub) {
+                case 1:
+                    compressorStation.startWorkshop();
+                    break;
+                case 2:
+                    compressorStation.stopWorkshop();
+                    break;
+                default:
+                    cout << "Неверный пункт меню\n";
+                }
+            }
+            break;
 
-             }
-             break;
-         case 6: {
-             ofstream file("data.txt");
-             if (file.is_open()) {
-                 if (pipeFilled) pipe.saveToFile(file);
-                 if (csFilled) compressorStation.saveToFile(file);
-                 file.close();
-                 cout << "Данные сохранены\n";
-             }
-             else {
-                 cout << "Ошибка открытия файла\n";
-             }
-             break;
-         }
-         case 7:{
-             ifstream file("data.txt");
-             if (file.is_open()) {
-                 pipe.loadFromFile(file);
-                 compressorStation.loadFromFile(file);
-                 pipeFilled = true;
-                 csFilled = true;
-                 file.close();
-                 cout << "Данные загружены\n";
-             }
-             else {
-                 cout << "Файл не найден\n";
-             }
-             break;
-         }
+        case 6: {
+            ofstream file("data.txt");
+            if (file.is_open()) {
 
-         case 0:
-             cout << "Выход из программы\n";
-             return 0;
-         default:
-             cout << "Неверный пункт меню!\n";
-         }
+                if (pipeFilled) {
+                    pipe.saveToFile(file);
+                }
+                else {
+                    file << "0\n";
+                }
+
+                if (csFilled) {
+                    compressorStation.saveToFile(file);
+                }
+                else {
+                    file << "0\n";
+                }
+
+                file.close();
+                cout << "Данные сохранены\n";
+            }
+            else {
+                cout << "Ошибка открытия файла\n";
+            }
+            break;
+        }
+
+        case 7: {
+            ifstream file("data.txt");
+            if (file.is_open()) {
+                bool loadedPipe = pipe.loadFromFile(file);
+                bool loadedCs = compressorStation.loadFromFile(file);
+
+                pipeFilled = loadedPipe;
+                csFilled = loadedCs;
+
+                if (!loadedCs) {
+                    compressorStation = CompressorStation();  
+                }
+
+                if (loadedPipe || loadedCs) {
+                    cout << "Данные загружены\n";
+                }
+                else {
+                    cout << "Файл пуст или повреждён\n";
+                }
+                file.close();
+            }
+            else {
+                cout << "Файл не найден\n";
+            }
+            break;
+        }
+
+        case 0:
+            cout << "Выход из программы\n";
+            return 0;
+
+        default:
+            cout << "Неверный пункт меню!\n";
+        }
     }
     return 0;
 }
-
-// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
-// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
-
-// Советы по началу работы 
-//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
-//   2. В окне Team Explorer можно подключиться к системе управления версиями.
-//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
-//   4. В окне "Список ошибок" можно просматривать ошибки.
-//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
-//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.
